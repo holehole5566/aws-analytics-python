@@ -30,7 +30,7 @@ producer = KafkaProducer(
 )
 
 # 隨機數據生成的範例資料
-sample_users = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Henry"]
+sample_users = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Henry","Jason"]
 sample_products = ["Laptop", "Phone", "Tablet", "Headphones", "Mouse", "Keyboard", "Monitor", "Speaker"]
 sample_actions = ["purchase", "view", "add_to_cart", "remove_from_cart", "login", "logout", "search"]
 sample_categories = ["Electronics", "Books", "Clothing", "Home", "Sports", "Beauty", "Automotive"]
