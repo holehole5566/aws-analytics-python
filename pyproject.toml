@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "aws-msk-iam-sasl-signer-python>=1.0.2",
+    "awscurl>=0.36",
     "boto3>=1.39.3",
     "faker>=37.5.3",
     "gremlinpython>=3.7.3",
