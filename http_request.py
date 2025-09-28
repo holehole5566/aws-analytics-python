@@ -17,6 +17,8 @@ def make_request():
     # Setup AWS authentication
     region = os.environ.get("AWS_REGION", "us-east-1")
     service = 'es'
+
+    url += "/_snapshot/poyenc/"
     
     try:
         credentials = boto3.Session().get_credentials()
@@ -34,19 +36,28 @@ def make_request():
         raise RuntimeError(f"Failed to setup AWS authentication: {e}")
     
     # Prepare request
-    payload = {"size": 1}
+    payload = {
+  "type": "s3",
+  "settings": {
+    "bucket": "opensearch-snapshot-poyenc",
+    "base_path": "opensearch-snapshots",
+    "region": "us-east-1",
+    "role_arn": "arn:aws:iam::533267144878:role/TheSnapshotRole"
+  }
+}
+
     headers = {"Content-Type": "application/json"}
     
     try:
         # Make the signed HTTP request
-        response = requests.get(
+        response = requests.put(
             url, 
             auth=awsauth, 
             headers=headers, 
             json=payload,  # Use json parameter instead of data
             timeout=30
         )
-        response.raise_for_status()
+        #response.raise_for_status()
         
         print(f"Status: {response.status_code}")
         print(f"Response: {response.json()}")
