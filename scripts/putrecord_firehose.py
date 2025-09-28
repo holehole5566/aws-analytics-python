@@ -9,7 +9,7 @@ firehose_client = boto3.client('firehose', region_name='us-east-1')  # Change re
 def create_compliance_event_record():
     """Create a sample compliance event record"""
     event_id = str(uuid.uuid4())
-    timestamp = datetime.utcnow().isoformat() + 'Z'
+    timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
     
     data = {
         "event_id": event_id,
@@ -62,6 +62,7 @@ def send_to_firehose(delivery_stream_name, record_data):
         # Add newline for proper record separation in Firehose
         json_data_with_newline = json_data + '\n'
         
+        start_time = datetime.utcnow()
         # Send record to Firehose
         response = firehose_client.put_record(
             DeliveryStreamName=delivery_stream_name,
@@ -69,6 +70,10 @@ def send_to_firehose(delivery_stream_name, record_data):
                 'Data': json_data_with_newline.encode('utf-8')
             }
         )
+
+        end_time = datetime.utcnow()
+        duration = (end_time - start_time).total_seconds() * 1000  # duration in milliseconds
+        print(f"Time taken to send record: {duration:.2f}")
         
         print(f"Successfully sent record to Firehose")
         print(f"Record ID: {response['RecordId']}")
@@ -91,11 +96,15 @@ def send_batch_to_firehose(delivery_stream_name, records_list):
                 'Data': json_data.encode('utf-8')
             })
         
+        start_time = datetime.utcnow()
         # Send batch records to Firehose (max 500 records per batch)
         response = firehose_client.put_record_batch(
             DeliveryStreamName=delivery_stream_name,
             Records=firehose_records
         )
+        end_time = datetime.utcnow()
+        duration = (end_time - start_time).total_seconds() * 1000  #
+        print(f"Time taken to send batch records: {duration:.2f} ms")
         
         print(f"Successfully sent {len(firehose_records)} records to Firehose")
         print(f"Failed record count: {response['FailedPutCount']}")
@@ -116,7 +125,7 @@ def send_batch_to_firehose(delivery_stream_name, records_list):
 # Main execution
 if __name__ == "__main__":
     # Configuration
-    DELIVERY_STREAM_NAME = "test-parquet-3"  # Replace with your Firehose delivery stream name
+    DELIVERY_STREAM_NAME = "test-parquet-dynamic"  # Replace with your Firehose delivery stream name
     
     # Example 1: Send single record
     print("=== Sending Single Record ===")
