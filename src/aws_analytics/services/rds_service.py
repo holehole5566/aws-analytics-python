@@ -114,5 +114,5 @@ class RDSService:
     
     def get_books(self, limit=10):
         """Get books from database"""
-        sql = "SELECT * FROM books ORDER BY title LIMIT %s"
+        sql = "SELECT * FROM books ORDER BY book_id desc LIMIT %s"
         return self.execute_query(sql, (limit,), fetch=True)
