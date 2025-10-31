@@ -62,7 +62,7 @@ if __name__ == "__main__":
     DO_INSERT = True  # Change to False to skip insert
     
     if DO_INSERT:
-        insert_test_data(cursor, num_records=100)
+        insert_test_data(cursor, num_records=10)
         conn.commit()
     
     cursor.close()
