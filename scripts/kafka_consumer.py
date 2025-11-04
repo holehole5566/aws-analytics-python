@@ -18,7 +18,7 @@ def safe_deserialize(x):
 
 # Kafka consumer configuration
 consumer = KafkaConsumer(
-    'dev-mysql.dev.users',
+    'dev-mysql-groovy.dev.users',
     bootstrap_servers=os.getenv('MSK_BOOTSTRAP_SERVERS').split(','),
     auto_offset_reset='earliest',  # Start from beginning
     enable_auto_commit=True,
